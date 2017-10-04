@@ -40,7 +40,7 @@ def load_mean_and_std(set_name, load_path="./"):
 def flatten(data, name_list):
     """ 
     Flattens a named numpy array so it can be used with pure numpy.
-    Input: named array
+    Input: named array and list of names of variables in the named array
     Output: numpy array
 
     Example;
@@ -81,13 +81,13 @@ def merge_batches_from_categories(merge_list):
             data_batch = hstack((data_batch, category_batch))
     return data_batch
 
-def scale_and_center(data, set_name):
+def scale_and_center(data, mean_vector std_vector):
     """
     Returns scaled and centered dataset
     data: Numpy array with the data.
-    set_name: Name of the set to use, for example 'hl_tracks'
+    mean_vector: Numpy array with the mean for each feature
+    std_vector: Numpy array with the standard deviation for each feature
     """
-    mean_vector, std_vector = load_mean_and_std(set_name)
     return (data - mean_vector)/std_vector
 
 def my_generator(file_name, set_name, batch_size=1):
@@ -101,6 +101,7 @@ def my_generator(file_name, set_name, batch_size=1):
     var_names, merge_order = get_variable_names(set_name)
     data_file = h5py.File(file_name, 'r')
     total_num_samples = get_num_samples(data_file)
+    mean_vector, std_vector = load_mean_and_std(set_name)
 
     while True:
         for start, end in zip(range(0, total_num_samples, batch_size), range(batch_size, total_num_samples+batch_size, batch_size)):
@@ -116,7 +117,7 @@ def my_generator(file_name, set_name, batch_size=1):
                 merge_list.append(category_batch)
             data_batch = merge_batches_from_categories(merge_list)
             data_batch = np.nan_to_num(data_batch)
-            data_batch = scale_and_center(data_batch, set_name)
+            data_batch = scale_and_center(data_batch, mean_vector, std_vector)
             yield data_batch
 
 
