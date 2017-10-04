@@ -69,7 +69,7 @@ def get_num_samples(data_file, axis=0, dataset_name=""):
 
 def merge_batches_from_categories(merge_list):
     """
-    Returns a numpy array which is the horizontal stacking of the arrays in merge_list
+    Returns a numpy array with the horizontal stacking of the arrays in merge_list
     merge_list: List of numpy arrays with the same size on the first axis
     """
     data_batch = None
