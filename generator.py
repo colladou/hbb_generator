@@ -3,7 +3,6 @@ from __future__ import print_function
 import numpy as np
 import h5py 
 
-# TODO get variable names concatenated (for flattening)
 # hard code get_variable_names
 # check that in functions I am returning the transformed data and not transforming the original data
 # implement management for trailing samples in batch size
@@ -91,6 +90,11 @@ def scale_and_center(data, mean_vector std_vector):
     return (data - mean_vector)/std_vector
 
 def concatenate_names_from_categories(var_names, merge_order):
+    """
+    Returns names from all categories concatenated. There can be repeated names.
+    var_names: Dictionary with tuples of names for each category
+    merge_order: Iterable with the correct order in which each category should be concatenated.
+    """
     concatenated_names = []
     for category in merge_order:
         concatenated_names = concatenated_names + var_names[category]
