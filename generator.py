@@ -7,6 +7,7 @@ import h5py
 # hard code get_variable_names
 # extract_variables code
 # check that in functions I am returning the transformed data and not transforming the original data
+# implement management for trailing samples in batch size
 
 def get_variable_names(set_name):
     """
