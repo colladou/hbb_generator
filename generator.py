@@ -24,8 +24,7 @@ def get_variable_names(set_name):
         print(set_name)        
         raise NotImplementedError
 
-def load_mean_and_std(set_name):
-    load_path = "/baldig/physicsprojects/atlas/hbb/raw_data/v_3/"
+def load_mean_and_std(set_name, load_path="./"):
     mean_vector = np.load(load_path + "%s_mean_vector.npy" % set_name)
     std_vector = np.load(load_path + "%s_std_vector.npy" % set_name)
     std_vector[std_vector == 0] = 1  # prevent x/0 division
