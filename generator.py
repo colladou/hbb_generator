@@ -106,8 +106,10 @@ def my_generator(file_name, set_name, batch_size=1):
     """
     var_names, merge_order = get_variable_names(set_name)
     data_file = h5py.File(file_name, 'r')
+    assert data_file is not None
     total_num_samples = get_num_samples(data_file)
     mean_vector, std_vector = load_mean_and_std(set_name)
+    set_variable_names = concatenate_names_from_categories(var_names, merge_order)  # in case we want to look at the full var name list
 
     while True:
         for start, end in zip(range(0, total_num_samples, batch_size), range(batch_size, total_num_samples+batch_size, batch_size)):
