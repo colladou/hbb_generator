@@ -5,7 +5,6 @@ import h5py
 
 # TODO get variable names concatenated (for flattening)
 # hard code get_variable_names
-# extract_variables code
 # check that in functions I am returning the transformed data and not transforming the original data
 # implement management for trailing samples in batch size
 
@@ -90,6 +89,12 @@ def scale_and_center(data, mean_vector std_vector):
     std_vector: Numpy array with the standard deviation for each feature
     """
     return (data - mean_vector)/std_vector
+
+def concatenate_names_from_categories(var_names, merge_order):
+    concatenated_names = []
+    for category in merge_order:
+        concatenated_names = concatenated_names + var_names[category]
+    return concatenated_names
 
 def my_generator(file_name, set_name, batch_size=1):
     """
