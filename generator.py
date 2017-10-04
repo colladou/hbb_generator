@@ -51,8 +51,8 @@ def flatten(data, name_list):
     flat = data.astype(ftype).view(float).reshape(data.shape + (-1,))
     return flat.swapaxes(1, len(data.shape))
 
-def extract_variables():
-    pass
+def extract_variables(data, variable_names):    
+    return data[variable_names][:]
 
 def get_num_samples(data_file, axis=0, dataset_name=""):
     """
@@ -112,6 +112,7 @@ def my_generator(file_name, set_name, batch_size=1):
                 # We have to extract each one separately and then merge them. 
                 # The merge also needs to be done in a specific order so it matches the ordering used for scaling and training.
                 category_data = data_file.get(category)
+                assert category_data is not None
                 category_batch = category_data[start:end] # this may need to be adjusted depending on dimensions
                 category_batch = extract_variables(category_batch, var_names[category])
                 category_batch = flatten(category_batch)
