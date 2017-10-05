@@ -17,21 +17,22 @@ def get_variable_names(set_name):
     # here we hard code the names of the variables we want to use and from which set they come
     var_names = {}
     if set_name == 'hl_tracks':
-        var_names[jets] = ('pt', 'eta')
-        var_names[subjet1] = ('pt', 'eta', 
+        var_names['jets'] = ('pt', 'eta')
+        var_names['subjet1'] = ('pt', 'eta', 
                               'ip3d_ntrk', 'ip2d_pu', 'ip2d_pc', 'ip2d_pb', 'ip3d_pu', 'ip3d_pc', 'ip3d_pb',
                               'mu_dR', 'mu_mombalsignif', 'mu_d0', 'mu_pTrel', 'mu_qOverPratio', 'mu_scatneighsignif',
                               'jf_dr', 'jf_efc', 'jf_m', 'jf_n2t', 'jf_ntrkAtVx', 'jf_nvtx', 'jf_nvtx1t', 'jf_sig3d', 'jf_deta', 'jf_dphi',
                               'sv1_dR', 'sv1_efc', 'sv1_Lxyz', 'sv1_Lxy', 'sv1_m', 'sv1_n2t', 'sv1_ntrkv', 'sv1_normdist',
                               'dphi_fatjet', 'deta_fatjet', 'dr_fatjet',
                               'mask')
-        var_names[subjet2] = var_names[subjet1]
+        var_names['subjet2'] = var_names['subjet1']
         merge_order = ('jets', 'subjet1', 'subjet2')
     elif set_name == 'tracks':
         pass
     else:
         print(set_name)        
         raise NotImplementedError
+    return [var_names, merge_order]
 
 def load_mean_and_std(set_name, load_path="./"):
     """
@@ -69,8 +70,8 @@ def get_num_samples(data_file, axis=0, dataset_name=""):
     data_file: h5py open file
     """
     if dataset_name == "":
-        data_sets = data_file.keys()
-        assert len(data_sets) > 0
+        data_sets = list(data_file.keys())
+        assert len(data_sets) > 0, "There must be at least one dataset on the hdf5 file"
         data = data_file.get(data_sets[0])
     else:
         data = data_file.get(dataset_name)
@@ -90,7 +91,7 @@ def merge_batches_from_categories(merge_list):
             data_batch = hstack((data_batch, category_batch))
     return data_batch
 
-def scale_and_center(data, mean_vector std_vector):
+def scale_and_center(data, mean_vector, std_vector):
     """
     Returns scaled and centered dataset
     data: Numpy array with the data.
@@ -145,5 +146,5 @@ def my_generator(file_name, set_name, batch_size=1):
 
 if __name__ == "__main__":
     gen_1 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks')
-    print(gen_1.next())
-     
+    #print(gen_1.next()) # this syntax is for python 2
+    print(next(gen_1))
