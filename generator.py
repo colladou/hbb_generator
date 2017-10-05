@@ -149,6 +149,6 @@ def my_generator(file_name, set_name, batch_size=1):
             yield data_batch
 
 if __name__ == "__main__":
-    gen_1 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks')
+    gen_1 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks', 2)
     #print(gen_1.next()) # this syntax is for python 2
     print(next(gen_1))
