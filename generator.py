@@ -43,8 +43,8 @@ def load_mean_and_std(set_name, load_path="./"):
     mean_vector = np.load(load_path + "%s_mean_vector.npy" % set_name)
     std_vector = np.load(load_path + "%s_std_vector.npy" % set_name)
     std_vector[std_vector == 0] = 1  # prevent x/0 division
-    assert np.sum(np.is_nan(mean_vector)) == 0, "Nan value found in mean vector"
-    assert np.sum(np.is_nan(std_vector)) == 0, "Nan value found in std vector"
+    assert np.sum(np.isnan(mean_vector)) == 0, "Nan value found in mean vector"
+    assert np.sum(np.isnan(std_vector)) == 0, "Nan value found in std vector"
     return [mean_vector, std_vector]
 
 def flatten(data, name_list):
@@ -61,6 +61,9 @@ def flatten(data, name_list):
     return flat.swapaxes(1, len(data.shape))
 
 def extract_variables(data, variable_names):    
+    print(data.shape)
+    print(data)
+    print(data[variable_names])
     return data[variable_names][:]
 
 def get_num_samples(data_file, axis=0, dataset_name=""):
@@ -108,7 +111,7 @@ def concatenate_names_from_categories(var_names, merge_order):
     """
     concatenated_names = []
     for category in merge_order:
-        concatenated_names = concatenated_names + var_names[category]
+        concatenated_names = concatenated_names + list(var_names[category])
     return concatenated_names
 
 def my_generator(file_name, set_name, batch_size=1):
@@ -135,9 +138,10 @@ def my_generator(file_name, set_name, batch_size=1):
                 # The merge also needs to be done in a specific order so it matches the ordering used for scaling and training.
                 category_data = data_file.get(category)
                 assert category_data is not None
+                # TODO I think this is loading the whole dataset but I don't see a way around it if we want to use names
+                category_data = category_data[var_names[category]]  # If you take a sample and then use names it fails you have to do it this way
                 category_batch = category_data[start:end] # this may need to be adjusted depending on dimensions
-                category_batch = extract_variables(category_batch, var_names[category])
-                category_batch = flatten(category_batch)
+                category_batch = flatten(category_batch, var_names[category])
                 merge_list.append(category_batch)
             data_batch = merge_batches_from_categories(merge_list)
             data_batch = np.nan_to_num(data_batch)
