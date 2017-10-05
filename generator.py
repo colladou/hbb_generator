@@ -91,7 +91,7 @@ def merge_batches_from_categories(merge_list):
             data_batch = category_batch
         else:
             assert data_batch.shape[0] == category_batch.shape[0], "Numpy arrays in list must have the same number of samples"
-            data_batch = hstack((data_batch, category_batch))
+            data_batch = np.hstack((data_batch, category_batch))
     return data_batch
 
 def scale_and_center(data, mean_vector, std_vector):
