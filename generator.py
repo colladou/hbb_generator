@@ -40,9 +40,8 @@ def load_mean_and_std(set_name, load_path="./"):
     set_name: Name of the set to use, for example 'hl_tracks'
     load_path: Path where the vectors are located.
     """
-    #mean_vector = np.load(load_path + "%s_mean_vector.npy" % set_name)
-    #std_vector = np.load(load_path + "%s_std_vector.npy" % set_name)
-    mean_vector, std_vector = 1, 1
+    mean_vector = np.load(load_path + "%s_mean_vector.npy" % set_name)
+    std_vector = np.load(load_path + "%s_std_vector.npy" % set_name)
     std_vector[std_vector == 0] = 1  # prevent x/0 division
     assert np.sum(np.is_nan(mean_vector)) == 0, "Nan value found in mean vector"
     assert np.sum(np.is_nan(std_vector)) == 0, "Nan value found in std vector"
