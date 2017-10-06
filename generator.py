@@ -138,9 +138,8 @@ def my_generator(file_name, set_name, batch_size=1):
                 # The merge also needs to be done in a specific order so it matches the ordering used for scaling and training.
                 category_data = data_file.get(category)
                 assert category_data is not None
-                # TODO I think this is loading the whole dataset but I don't see a way around it if we want to use names
-                category_data = category_data[var_names[category]]  # If you take a sample and then use names it fails you have to do it this way
                 category_batch = category_data[start:end] # this may need to be adjusted depending on dimensions
+                category_batch = category_batch[list(var_names[category])]  
                 category_batch = flatten(category_batch, var_names[category])
                 merge_list.append(category_batch)
             data_batch = merge_batches_from_categories(merge_list)
