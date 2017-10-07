@@ -114,6 +114,21 @@ def concatenate_names_from_categories(var_names, merge_order):
         concatenated_names = concatenated_names + list(var_names[category])
     return concatenated_names
 
+def get_weights(data_file, start=0, end=None):
+    """
+    Returns the weights of the data. It assumes they are in the jets dataset
+    data_file: Open file with the data
+    start: batch start sample
+    end: batch end sample
+    """
+    category_data = data_file.get('jets')
+    if end is None:
+        end = category_data.shape[0]
+    category_batch = category_data[start:end]
+    weights = category_batch['weight']
+    assert weights is not None
+    return weights
+
 def my_generator(file_name, set_name, batch_size=1):
     """
     Yields a batch of samples ready to use for predictions with a Keras model.
@@ -131,6 +146,7 @@ def my_generator(file_name, set_name, batch_size=1):
 
     while True:
         for start, end in zip(range(0, total_num_samples, batch_size), range(batch_size, total_num_samples+batch_size, batch_size)):
+            weights = get_weights(data_file, start, end)
             merge_list = []
             for category in merge_order:
                 # The batch of interest has variables in several of the datasets of the hdf5 file. 
@@ -145,7 +161,7 @@ def my_generator(file_name, set_name, batch_size=1):
             data_batch = merge_batches_from_categories(merge_list)
             data_batch = np.nan_to_num(data_batch)
             data_batch = scale_and_center(data_batch, mean_vector, std_vector)
-            yield data_batch
+            yield [data_batch, weights]
 
 if __name__ == "__main__":
     gen_1 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks', 2)
