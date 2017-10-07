@@ -129,6 +129,23 @@ def get_weights(data_file, start=0, end=None):
     assert weights is not None
     return weights
 
+def get_batch_slicing_indexes(batch_size, total_num_samples):
+    """
+    Returns an iterable with the (start, end) indices for slicing the data into batches.
+    It solves the problem of the number of samples not being divisible by the batch size
+    batch_size: Desired batch size all the batches except the last one in case it is not divisible
+    total_num_samples: Total number of samples in the dataset
+    """
+    num_trailing_samples = total_num_samples%batch_size
+    num_samples = total_num_samples - num_trailing_samples
+    if num_trailing_samples != 0:
+        batch_start_end_indices = zip(list(range(0, num_samples, batch_size)) + [num_samples], 
+                                      list(range(batch_size, num_samples+batch_size, batch_size)) + [total_num_samples])
+    else:
+        batch_start_end_indices = zip(range(0, num_samples, batch_size),
+                                      range(batch_size, num_samples+batch_size, batch_size))
+    return batch_start_end_indices
+
 def my_generator(file_name, set_name, batch_size=1):
     """
     Yields a batch of samples ready to use for predictions with a Keras model.
@@ -145,8 +162,7 @@ def my_generator(file_name, set_name, batch_size=1):
     set_variable_names = concatenate_names_from_categories(var_names, merge_order)  # in case we want to look at the full var name list
 
     while True:
-        for start, end in zip(range(0, total_num_samples, batch_size), range(batch_size, total_num_samples+batch_size, batch_size)):
-            weights = get_weights(data_file, start, end)
+        for start, end in get_batch_slicing_indexes(batch_size, total_num_samples):
             merge_list = []
             for category in merge_order:
                 # The batch of interest has variables in several of the datasets of the hdf5 file. 
@@ -161,9 +177,17 @@ def my_generator(file_name, set_name, batch_size=1):
             data_batch = merge_batches_from_categories(merge_list)
             data_batch = np.nan_to_num(data_batch)
             data_batch = scale_and_center(data_batch, mean_vector, std_vector)
+
+            weights = get_weights(data_file, start, end)
             yield [data_batch, weights]
 
 if __name__ == "__main__":
     gen_1 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks', 2)
     #print(gen_1.next()) # this syntax is for python 2
     print(next(gen_1))
+    # this tests the trailing samples problem
+    #gen_2 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks', 100)
+    #for i in range(88):
+    #    batch = next(gen_2)
+    #    print(batch[0].shape)
+
