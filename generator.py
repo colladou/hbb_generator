@@ -146,13 +146,14 @@ def get_batch_slicing_indexes(batch_size, total_num_samples):
                                       range(batch_size, num_samples+batch_size, batch_size))
     return batch_start_end_indices
 
-def my_generator(file_name, set_name, batch_size=1):
+def my_generator(file_name, set_name, batch_size=1, label=None):
     """
     Yields a batch of samples ready to use for predictions with a Keras model.
     It takes care of getting the correct variables accross datasets, preprocessing, scaling and centering.
     file_name: Path to the hdf5 file 
     set_name: Name of the set to use, for example 'hl_tracks'
     batch_size: Size of each batch to yield
+    label: Integer, specifies the label to be returned for this sample
     """
     var_names, merge_order = get_variable_names(set_name)
     data_file = h5py.File(file_name, 'r')
@@ -179,10 +180,14 @@ def my_generator(file_name, set_name, batch_size=1):
             data_batch = scale_and_center(data_batch, mean_vector, std_vector)
 
             weights = get_weights(data_file, start, end)
-            yield [data_batch, weights]
+            if label is not None:
+                y = np.ones((data_batch.shape[0],)) * label
+                yield [data_batch, y, weights]
+            else:
+                yield [data_batch, weights]
 
 if __name__ == "__main__":
-    gen_1 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks', 2)
+    gen_1 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks', 2, 1)
     #print(gen_1.next()) # this syntax is for python 2
     print(next(gen_1))
     # this tests the trailing samples problem
