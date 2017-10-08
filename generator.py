@@ -34,7 +34,7 @@ def get_variable_names(set_name):
         raise NotImplementedError
     return [var_names, merge_order]
 
-def load_mean_and_std(set_name, load_path="./"):
+def load_mean_and_std(set_name, load_path="/baldig/physicsprojects/atlas/hbb/raw_data/v_3/"):
     """
     Returns mean and std vectors for scaling and centering purposes
     set_name: Name of the set to use, for example 'hl_tracks'
@@ -146,7 +146,7 @@ def get_batch_slicing_indexes(batch_size, total_num_samples):
                                       range(batch_size, num_samples+batch_size, batch_size))
     return batch_start_end_indices
 
-def my_generator(file_name, set_name, batch_size=1, label=None):
+def my_generator(file_name, set_name, batch_size=1, label=None, include_weights=False):
     """
     Yields a batch of samples ready to use for predictions with a Keras model.
     It takes care of getting the correct variables accross datasets, preprocessing, scaling and centering.
@@ -179,12 +179,18 @@ def my_generator(file_name, set_name, batch_size=1, label=None):
             data_batch = np.nan_to_num(data_batch)
             data_batch = scale_and_center(data_batch, mean_vector, std_vector)
 
-            weights = get_weights(data_file, start, end)
-            if label is not None:
+            if include_weights:
+                weights = get_weights(data_file, start, end)
+
+            if label is not None and include_weights:
                 y = np.ones((data_batch.shape[0],)) * label
                 yield [data_batch, y, weights]
-            else:
+            elif label is None and include_weights:
                 yield [data_batch, weights]
+            elif label is not None and not include_weights:
+                yield [data_batch, y]
+            else:
+                yield data_batch
 
 if __name__ == "__main__":
     gen_1 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks', 2, 1)
