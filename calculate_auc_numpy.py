@@ -17,7 +17,6 @@ import math
 from generator import my_generator
 from generator import get_num_samples, get_weights
 
-# dynamically change label based on file list
 # be able to predict only on smaller number of samples of the file
 
 def get_model_name(feature):
@@ -26,15 +25,17 @@ def get_model_name(feature):
     else:
         return '%s_model.h5' % feature 
 
-def get_predictions_from_file_list(model, file_names, feature, load_path='./'):
+def get_predictions_from_file_list(model, file_names, feature, load_path='./', subsample=100):
     predictions = None
     weights = None
-
     for file_name in file_names:
+        print("Making predictions for: ", file_name)
         file_name = load_path + file_name
         with h5py.File(file_name, 'r') as open_file:
-            steps = math.ceil(get_num_samples(open_file)/(batch_size*1.0))
+            num_samples = get_num_samples(open_file) * (sub_sample/100.0)
+            steps = math.ceil(num_samples/(batch_size*1.0))
             file_weights = get_weights(open_file)
+            file_weights = file_weights[0:num_samples]
         gen = my_generator(file_name, feature, batch_size)
         file_predictions = model.predict_generator(gen, steps, verbose=0)
         if predictions is None:
@@ -70,7 +71,7 @@ load_path = '/baldig/physicsprojects/atlas/hbb/raw_data/v_3/'
 s_predictions, s_weights = get_predictions_from_file_list(model, s_file_names, feature, load_path)
 s_test_y = np.ones_like(predictions)
 
-bg_predictions, bg_weights = get_predictions_from_file_list(model, bg_file_names, feature, load_path)
+bg_predictions, bg_weights = get_predictions_from_file_list(model, bg_file_names, feature, load_path, subsample=10)
 bg_test_y = np.ones_like(predictions) * 0
 
 print(s_predictions.shape, s_test_y.shape, s_weights.shape)
