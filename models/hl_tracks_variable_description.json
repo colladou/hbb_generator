@@ -1,0 +1,463 @@
+{
+  "inputs": [
+    {
+      "scale": 0.0007691505015827715,
+      "name": "jet_pt",
+      "offset": -1245.4908447265625,
+      "default": 1245.4908447265625
+    },
+    {
+      "scale": 1.2360880374908447,
+      "name": "jet_eta",
+      "offset": -0.0016221697442233562,
+      "default": 0.0016221697442233562
+    },
+    {
+      "scale": 3.375788082848885e-06,
+      "name": "subjet_1_pt",
+      "offset": -1555.311767578125,
+      "default": 1555.311767578125
+    },
+    {
+      "scale": 1.2395371198654175,
+      "name": "subjet_1_eta",
+      "offset": -0.0015542919281870127,
+      "default": 0.0015542919281870127
+    },
+    {
+      "scale": 9.351071916796627e-09,
+      "name": "subjet_1_ip3d_ntrk",
+      "offset": -1071309184.0,
+      "default": 1071309184.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_ip2d_pu",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_ip2d_pc",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_ip2d_pb",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 0.36910393834114075,
+      "name": "subjet_1_ip3d_pu",
+      "offset": 0.07018349319696426,
+      "default": -0.07018349319696426
+    },
+    {
+      "scale": 0.36911267042160034,
+      "name": "subjet_1_ip3d_pc",
+      "offset": 0.07073654234409332,
+      "default": -0.07073654234409332
+    },
+    {
+      "scale": 0.369093120098114,
+      "name": "subjet_1_ip3d_pb",
+      "offset": 0.0694158524274826,
+      "default": -0.0694158524274826
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_mu_dR",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_mu_mombalsignif",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_mu_d0",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_mu_pTrel",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_mu_qOverPratio",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_mu_scatneighsignif",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 33.550540924072266,
+      "name": "subjet_1_jf_dr",
+      "offset": -0.01871677115559578,
+      "default": 0.01871677115559578
+    },
+    {
+      "scale": 3.0840723514556885,
+      "name": "subjet_1_jf_efc",
+      "offset": -0.4808526039123535,
+      "default": 0.4808526039123535
+    },
+    {
+      "scale": 0.38480427861213684,
+      "name": "subjet_1_jf_m",
+      "offset": -3.092712640762329,
+      "default": 3.092712640762329
+    },
+    {
+      "scale": 0.15568307042121887,
+      "name": "subjet_1_jf_n2t",
+      "offset": -2.9431610107421875,
+      "default": 2.9431610107421875
+    },
+    {
+      "scale": 0.4636029899120331,
+      "name": "subjet_1_jf_ntrkAtVx",
+      "offset": -1.8370230197906494,
+      "default": 1.8370230197906494
+    },
+    {
+      "scale": 1.5264354944229126,
+      "name": "subjet_1_jf_nvtx",
+      "offset": -0.7447860240936279,
+      "default": 0.7447860240936279
+    },
+    {
+      "scale": 1.2313603162765503,
+      "name": "subjet_1_jf_nvtx1t",
+      "offset": -0.6037189960479736,
+      "default": 0.6037189960479736
+    },
+    {
+      "scale": 0.044596973806619644,
+      "name": "subjet_1_jf_sig3d",
+      "offset": -22.542028427124023,
+      "default": 22.542028427124023
+    },
+    {
+      "scale": 41.12043762207031,
+      "name": "subjet_1_jf_deta",
+      "offset": -4.5396151108434424e-05,
+      "default": 4.5396151108434424e-05
+    },
+    {
+      "scale": 39.33304214477539,
+      "name": "subjet_1_jf_dphi",
+      "offset": 3.4548800613265485e-05,
+      "default": -3.4548800613265485e-05
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_sv1_dR",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 3.583707809448242,
+      "name": "subjet_1_sv1_efc",
+      "offset": -0.44042301177978516,
+      "default": 0.44042301177978516
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_sv1_Lxyz",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_1_sv1_Lxy",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 0.890453577041626,
+      "name": "subjet_1_sv1_m",
+      "offset": -1.9367258548736572,
+      "default": 1.9367258548736572
+    },
+    {
+      "scale": 0.18470361828804016,
+      "name": "subjet_1_sv1_n2t",
+      "offset": -2.2429659366607666,
+      "default": 2.2429659366607666
+    },
+    {
+      "scale": 0.390046089887619,
+      "name": "subjet_1_sv1_ntrkv",
+      "offset": -1.214751958847046,
+      "default": 1.214751958847046
+    },
+    {
+      "scale": 0.015814056620001793,
+      "name": "subjet_1_sv1_normdist",
+      "offset": -49.726051330566406,
+      "default": 49.726051330566406
+    },
+    {
+      "scale": 11.289313316345215,
+      "name": "subjet_1_dphi_fatjet",
+      "offset": -9.147911441687029e-06,
+      "default": 9.147911441687029e-06
+    },
+    {
+      "scale": 10.694958686828613,
+      "name": "subjet_1_deta_fatjet",
+      "offset": 6.962577754165977e-05,
+      "default": -6.962577754165977e-05
+    },
+    {
+      "scale": 10.593356132507324,
+      "name": "subjet_1_dr_fatjet",
+      "offset": -0.08776143193244934,
+      "default": 0.08776143193244934
+    },
+    {
+      "scale": 38.83318328857422,
+      "name": "subjet_1_mask",
+      "offset": -0.9993360042572021,
+      "default": 0.9993360042572021
+    },
+    {
+      "scale": 0.0025270446203649044,
+      "name": "subjet_2_pt",
+      "offset": -110.53239440917969,
+      "default": 110.53239440917969
+    },
+    {
+      "scale": 1.3239206075668335,
+      "name": "subjet_2_eta",
+      "offset": -0.0021400621626526117,
+      "default": 0.0021400621626526117
+    },
+    {
+      "scale": 9.351071916796627e-09,
+      "name": "subjet_2_ip3d_ntrk",
+      "offset": -1071309184.0,
+      "default": 1071309184.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_ip2d_pu",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_ip2d_pc",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_ip2d_pb",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 0.15049679577350616,
+      "name": "subjet_2_ip3d_pu",
+      "offset": 0.4224385917186737,
+      "default": -0.4224385917186737
+    },
+    {
+      "scale": 0.15050767362117767,
+      "name": "subjet_2_ip3d_pc",
+      "offset": 0.4276942014694214,
+      "default": -0.4276942014694214
+    },
+    {
+      "scale": 0.15050411224365234,
+      "name": "subjet_2_ip3d_pb",
+      "offset": 0.42943108081817627,
+      "default": -0.42943108081817627
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_mu_dR",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_mu_mombalsignif",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_mu_d0",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_mu_pTrel",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_mu_qOverPratio",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_mu_scatneighsignif",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 18.725555419921875,
+      "name": "subjet_2_jf_dr",
+      "offset": -0.03654990345239639,
+      "default": 0.03654990345239639
+    },
+    {
+      "scale": 2.892754554748535,
+      "name": "subjet_2_jf_efc",
+      "offset": -0.4039080739021301,
+      "default": 0.4039080739021301
+    },
+    {
+      "scale": 0.5139820575714111,
+      "name": "subjet_2_jf_m",
+      "offset": -1.9244378805160522,
+      "default": 1.9244378805160522
+    },
+    {
+      "scale": 0.23919156193733215,
+      "name": "subjet_2_jf_n2t",
+      "offset": -1.264274001121521,
+      "default": 1.264274001121521
+    },
+    {
+      "scale": 0.46900734305381775,
+      "name": "subjet_2_jf_ntrkAtVx",
+      "offset": -0.8734430074691772,
+      "default": 0.8734430074691772
+    },
+    {
+      "scale": 1.6759564876556396,
+      "name": "subjet_2_jf_nvtx",
+      "offset": -0.43430399894714355,
+      "default": 0.43430399894714355
+    },
+    {
+      "scale": 1.555725336074829,
+      "name": "subjet_2_jf_nvtx1t",
+      "offset": -0.3487350046634674,
+      "default": 0.3487350046634674
+    },
+    {
+      "scale": 0.04404272511601448,
+      "name": "subjet_2_jf_sig3d",
+      "offset": -18.725400924682617,
+      "default": 18.725400924682617
+    },
+    {
+      "scale": 22.822998046875,
+      "name": "subjet_2_jf_deta",
+      "offset": -2.1548979930230416e-05,
+      "default": 2.1548979930230416e-05
+    },
+    {
+      "scale": 21.01072883605957,
+      "name": "subjet_2_jf_dphi",
+      "offset": 5.416663771029562e-05,
+      "default": -5.416663771029562e-05
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_sv1_dR",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 3.1090614795684814,
+      "name": "subjet_2_sv1_efc",
+      "offset": -0.39803627133369446,
+      "default": 0.39803627133369446
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_sv1_Lxyz",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 1.0,
+      "name": "subjet_2_sv1_Lxy",
+      "offset": -0.0,
+      "default": 0.0
+    },
+    {
+      "scale": 0.843051016330719,
+      "name": "subjet_2_sv1_m",
+      "offset": -1.3921918869018555,
+      "default": 1.3921918869018555
+    },
+    {
+      "scale": 0.20564433932304382,
+      "name": "subjet_2_sv1_n2t",
+      "offset": -1.4783819913864136,
+      "default": 1.4783819913864136
+    },
+    {
+      "scale": 0.4225039482116699,
+      "name": "subjet_2_sv1_ntrkv",
+      "offset": -0.6657789945602417,
+      "default": 0.6657789945602417
+    },
+    {
+      "scale": 0.017098532989621162,
+      "name": "subjet_2_sv1_normdist",
+      "offset": -38.03376388549805,
+      "default": 38.03376388549805
+    },
+    {
+      "scale": 5.0465898513793945,
+      "name": "subjet_2_dphi_fatjet",
+      "offset": -8.539330156054348e-05,
+      "default": 8.539330156054348e-05
+    },
+    {
+      "scale": 5.080063819885254,
+      "name": "subjet_2_deta_fatjet",
+      "offset": -0.0003232479211874306,
+      "default": 0.0003232479211874306
+    },
+    {
+      "scale": 5.295757293701172,
+      "name": "subjet_2_dr_fatjet",
+      "offset": -0.2060367614030838,
+      "default": 0.2060367614030838
+    },
+    {
+      "scale": 3.1910135746002197,
+      "name": "subjet_2_mask",
+      "offset": -0.8907470107078552,
+      "default": 0.8907470107078552
+    }
+  ],
+  "class_labels": [
+    "higgs_prob"
+  ]
+}
