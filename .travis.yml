@@ -7,5 +7,8 @@ python:
 before_install:
   pip install -r requirements.txt
 
+env:
+  - KERAS_BACKEND=theano
+
 script:
   - python3 calculate_auc_numpy.py
