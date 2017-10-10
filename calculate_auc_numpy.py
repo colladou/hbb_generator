@@ -30,10 +30,7 @@ def get_args():
     return parser.parse_args()
 
 def get_model_name(feature):
-    if len(sys.argv) == 2:
-        return str(sys.argv[1])
-    else:
-        return '%s_model.h5' % feature 
+    return '%s_model.h5' % feature
 
 def get_predictions_from_file_list(model, file_names, feature, load_path='./', sub_sample=100):
     predictions = None
@@ -84,6 +81,9 @@ if args.mode == 'local':
 
 elif args.mode == 'julian':
     load_path = '/baldig/physicsprojects/atlas/hbb/raw_data/v_3/'
+
+elif args.mode == 'dan':
+    load_path = '/home/dguest/bookmarks/hbb/hbb/v3/data/'
 
 s_predictions, s_weights = get_predictions_from_file_list(model, s_file_names, feature, load_path)
 s_test_y = np.ones_like(s_predictions) * 0
