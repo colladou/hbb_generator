@@ -4,6 +4,7 @@ import h5py
 from os.path import join, isfile, isdir
 import numpy as np
 from sklearn import metrics
+import os
 
 def get_predictions_and_weights(name_list):
     pred_list = []
