@@ -1,0 +1,6 @@
+# ignore python cache files
+__pycache__/
+*.pyc
+
+# ignore some outputs
+/auc/
