@@ -1,8 +1,8 @@
 from __future__ import print_function
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = "%i" % 0
-os.environ['KERAS_BACKEND'] = "tensorflow"
+# os.environ['CUDA_VISIBLE_DEVICES'] = "%i" % 0
+# os.environ['KERAS_BACKEND'] = "tensorflow"
 
 import keras
 from keras.models import model_from_json
@@ -37,7 +37,8 @@ def get_predictions_from_file_list(model, file_names, feature, load_path='./', s
             file_weights = get_weights(open_file)
             file_weights = file_weights[0:steps*batch_size]
         gen = my_generator(file_name, feature, batch_size)
-        file_predictions = model.predict_generator(gen, steps, verbose=0)
+        print("running generator in {} steps".format(steps))
+        file_predictions = model.predict(next(gen))
         if predictions is None:
             predictions = file_predictions
             weights = file_weights
@@ -65,7 +66,10 @@ s_file_names = [#'d361021_j27.h5',
                 'd361025_j31.h5', 'd361026_j32.h5', 'd361027_j33.h5', 'd361028_j34.h5',
                 'd361029_j35.h5', 'd361030_j36.h5', 'd361031_j37.h5', 'd361032_j38.h5']
 
-load_path = '/baldig/physicsprojects/atlas/hbb/raw_data/v_3/'
+bg_file_names = ['d301488_j1.h5']
+s_file_names = ['d361022_j28.h5']
+
+load_path = 'data/'
 
 s_predictions, s_weights = get_predictions_from_file_list(model, s_file_names, feature, load_path)
 s_test_y = np.ones_like(s_predictions) * 0
