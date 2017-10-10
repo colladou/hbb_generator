@@ -17,3 +17,4 @@ env:
 
 script:
   - python3 calculate_auc_numpy.py
+  - python3 aggregate_predictions.py

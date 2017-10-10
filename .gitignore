@@ -4,3 +4,4 @@ __pycache__/
 
 # ignore some outputs
 /auc/
+/outputs/
