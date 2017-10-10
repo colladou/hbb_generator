@@ -19,8 +19,15 @@ import math
 from generator import my_generator
 from generator import get_num_samples, get_weights
 from os.path import isdir, join
+import argparse
 
 # be able to predict only on smaller number of samples of the file
+
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('mode', choices={'julian','dan','local'},
+                        default='local', nargs='?')
+    return parser.parse_args()
 
 def get_model_name(feature):
     if len(sys.argv) == 2:
@@ -51,6 +58,7 @@ def get_predictions_from_file_list(model, file_names, feature, load_path='./', s
         assert predictions.shape[0] == weights.shape[0], [predictions.shape[0], weights.shape[0]]
     return [predictions, weights]
 
+args = get_args()
 
 feature = 'hl_tracks'
 
@@ -69,10 +77,11 @@ s_file_names = [#'d361021_j27.h5',
                 'd361025_j31.h5', 'd361026_j32.h5', 'd361027_j33.h5', 'd361028_j34.h5',
                 'd361029_j35.h5', 'd361030_j36.h5', 'd361031_j37.h5', 'd361032_j38.h5']
 
-bg_file_names = ['d301488_j1.h5']
-s_file_names = ['d361022_j28.h5']
+if args.mode == 'local':
+    bg_file_names = ['d301488_j1.h5']
+    s_file_names = ['d361022_j28.h5']
 
-load_path = 'data/'
+    load_path = 'data/'
 
 s_predictions, s_weights = get_predictions_from_file_list(model, s_file_names, feature, load_path)
 s_test_y = np.ones_like(s_predictions) * 0
