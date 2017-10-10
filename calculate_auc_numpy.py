@@ -1,6 +1,8 @@
 from __future__ import print_function
 
 import os
+# You can set these as environment variables, i.e.
+# > CUDA_VISIBLE_DEVICES=0 KERAS_BACKEND=tensorflow python calculate_auc_numpy.py
 # os.environ['CUDA_VISIBLE_DEVICES'] = "%i" % 0
 # os.environ['KERAS_BACKEND'] = "tensorflow"
 
@@ -16,6 +18,7 @@ import h5py
 import math
 from generator import my_generator
 from generator import get_num_samples, get_weights
+from os.path import isdir, join
 
 # be able to predict only on smaller number of samples of the file
 
@@ -38,7 +41,7 @@ def get_predictions_from_file_list(model, file_names, feature, load_path='./', s
             file_weights = file_weights[0:steps*batch_size]
         gen = my_generator(file_name, feature, batch_size)
         print("running generator in {} steps".format(steps))
-        file_predictions = model.predict(next(gen))
+        file_predictions = model.predict_generator(gen, steps)
         if predictions is None:
             predictions = file_predictions
             weights = file_weights
@@ -95,8 +98,11 @@ print(predictions.shape, test_y.shape, weights.shape)
 
 assert predictions.shape[0] == test_y.shape[0], predictions.shape[0]
 
-np.save("./auc/%s_test_%s_y.npy" % (feature, model_name), test_y)
-np.save("./auc/%s_test_%s_predictions.npy" % (feature, model_name), predictions)
+auc_dir = 'auc'
+if not isdir(auc_dir):
+    os.mkdir(auc_dir)
+np.save(join(auc_dir, "%s_test_%s_y.npy" % (feature, model_name)), test_y)
+np.save(join(auc_dir,"%s_test_%s_predictions.npy" % (feature, model_name)), predictions)
 print("saved params")
 
 print(test_y.shape, predictions.shape)

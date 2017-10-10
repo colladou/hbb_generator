@@ -1,7 +1,8 @@
 from __future__ import print_function
 
 import numpy as np
-import h5py 
+import h5py
+from os.path import join
 
 # hard code get_variable_names
 # check that in functions I am returning the transformed data and not transforming the original data
@@ -40,8 +41,8 @@ def load_mean_and_std(set_name, load_path="/baldig/physicsprojects/atlas/hbb/raw
     set_name: Name of the set to use, for example 'hl_tracks'
     load_path: Path where the vectors are located.
     """
-    mean_vector = np.load(load_path + "%s_mean_vector.npy" % set_name)
-    std_vector = np.load(load_path + "%s_std_vector.npy" % set_name)
+    mean_vector = np.load(join(load_path, "%s_mean_vector.npy" % set_name))
+    std_vector = np.load(join(load_path, "%s_std_vector.npy" % set_name))
     std_vector[std_vector == 0] = 1  # prevent x/0 division
     assert np.sum(np.isnan(mean_vector)) == 0, "Nan value found in mean vector"
     assert np.sum(np.isnan(std_vector)) == 0, "Nan value found in std vector"
@@ -146,7 +147,7 @@ def get_batch_slicing_indexes(batch_size, total_num_samples):
                                       range(batch_size, num_samples+batch_size, batch_size))
     return batch_start_end_indices
 
-def my_generator(file_name, set_name, batch_size=1, label=None, include_weights=False):
+def my_generator(file_name, set_name, batch_size=1, label=None, include_weights=False, mean_and_std_path='models'):
     """
     Yields a batch of samples ready to use for predictions with a Keras model.
     It takes care of getting the correct variables accross datasets, preprocessing, scaling and centering.
@@ -159,7 +160,7 @@ def my_generator(file_name, set_name, batch_size=1, label=None, include_weights=
     data_file = h5py.File(file_name, 'r')
     assert data_file is not None
     total_num_samples = get_num_samples(data_file)
-    mean_vector, std_vector = load_mean_and_std(set_name)
+    mean_vector, std_vector = load_mean_and_std(set_name, mean_and_std_path)
     set_variable_names = concatenate_names_from_categories(var_names, merge_order)  # in case we want to look at the full var name list
 
     while True:
