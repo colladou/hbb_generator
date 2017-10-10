@@ -1,11 +1,19 @@
 sudo: false
+os:
+  # - osx
+  - linux
 dist: trusty
 language: python
 python:
   - 3.5
+  - 3.6
 
 before_install:
   pip install -r requirements.txt
+
+env:
+  - KERAS_BACKEND=theano
+  - KERAS_BACKEND=tensorflow
 
 script:
   - python3 calculate_auc_numpy.py

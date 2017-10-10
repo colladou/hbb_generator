@@ -30,10 +30,7 @@ def get_args():
     return parser.parse_args()
 
 def get_model_name(feature):
-    if len(sys.argv) == 2:
-        return str(sys.argv[1])
-    else:
-        return '%s_model.h5' % feature 
+    return '%s_model.h5' % feature
 
 def get_predictions_from_file_list(model, file_names, feature, load_path='./', sub_sample=100):
     predictions = None
@@ -65,23 +62,28 @@ feature = 'hl_tracks'
 model_name = get_model_name(feature)
 model = keras.models.load_model("./models/" + model_name)
 
-batch_size = 100
+batch_size = 5000
 
-bg_file_names = ['d301488_j1.h5', 'd301489_j2.h5', 'd301490_j3.h5', 'd301491_j4.h5',
+s_file_names = ['d301488_j1.h5', 'd301489_j2.h5', 'd301490_j3.h5', 'd301491_j4.h5',
                  'd301492_j5.h5', 'd301493_j6.h5', 'd301494_j7.h5', 'd301495_j8.h5',
                  'd301496_j9.h5', 'd301497_j10.h5', 'd301498_j11.h5', 'd301499_j12.h5',
                  'd301500_j13.h5', 'd301501_j14.h5', 'd301502_j15.h5', 'd301503_j16.h5',
                  'd301504_j17.h5', 'd301505_j18.h5', 'd301506_j19.h5', 'd301507_j20.h5']
-s_file_names = [#'d361021_j27.h5', 
-                'd361022_j28.h5', 'd361023_j29.h5','d361024_j30.h5', 
+bg_file_names = [#'d361021_j27.h5',
+                'd361022_j28.h5', 'd361023_j29.h5','d361024_j30.h5',
                 'd361025_j31.h5', 'd361026_j32.h5', 'd361027_j33.h5', 'd361028_j34.h5',
                 'd361029_j35.h5', 'd361030_j36.h5', 'd361031_j37.h5', 'd361032_j38.h5']
 
 if args.mode == 'local':
-    bg_file_names = ['d301488_j1.h5']
-    s_file_names = ['d361022_j28.h5']
-
     load_path = 'data/'
+    s_file_names = ['d301488_j1.h5']
+    bg_file_names = ['d361022_j28.h5']
+
+elif args.mode == 'julian':
+    load_path = '/baldig/physicsprojects/atlas/hbb/raw_data/v_3/'
+
+elif args.mode == 'dan':
+    load_path = '/home/dguest/bookmarks/hbb/hbb/v3/data/'
 
 s_predictions, s_weights = get_predictions_from_file_list(model, s_file_names, feature, load_path)
 s_test_y = np.ones_like(s_predictions) * 0
