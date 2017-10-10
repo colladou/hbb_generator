@@ -64,20 +64,20 @@ model = keras.models.load_model("./models/" + model_name)
 
 batch_size = 100
 
-bg_file_names = ['d301488_j1.h5', 'd301489_j2.h5', 'd301490_j3.h5', 'd301491_j4.h5',
+s_file_names = ['d301488_j1.h5', 'd301489_j2.h5', 'd301490_j3.h5', 'd301491_j4.h5',
                  'd301492_j5.h5', 'd301493_j6.h5', 'd301494_j7.h5', 'd301495_j8.h5',
                  'd301496_j9.h5', 'd301497_j10.h5', 'd301498_j11.h5', 'd301499_j12.h5',
                  'd301500_j13.h5', 'd301501_j14.h5', 'd301502_j15.h5', 'd301503_j16.h5',
                  'd301504_j17.h5', 'd301505_j18.h5', 'd301506_j19.h5', 'd301507_j20.h5']
-s_file_names = [#'d361021_j27.h5', 
-                'd361022_j28.h5', 'd361023_j29.h5','d361024_j30.h5', 
+bg_file_names = [#'d361021_j27.h5',
+                'd361022_j28.h5', 'd361023_j29.h5','d361024_j30.h5',
                 'd361025_j31.h5', 'd361026_j32.h5', 'd361027_j33.h5', 'd361028_j34.h5',
                 'd361029_j35.h5', 'd361030_j36.h5', 'd361031_j37.h5', 'd361032_j38.h5']
 
 if args.mode == 'local':
     load_path = 'data/'
-    bg_file_names = ['d301488_j1.h5']
-    s_file_names = ['d361022_j28.h5']
+    s_file_names = ['d301488_j1.h5']
+    bg_file_names = ['d361022_j28.h5']
 
 elif args.mode == 'julian':
     load_path = '/baldig/physicsprojects/atlas/hbb/raw_data/v_3/'
