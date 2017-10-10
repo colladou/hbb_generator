@@ -192,6 +192,11 @@ def my_generator(file_name, set_name, batch_size=1, label=None, include_weights=
                 yield [data_batch, y]
             else:
                 yield data_batch
+        # We return after running over one iteration of the while
+        # loop. This was done this way to make the diff less
+        # intrusive, but in the future we should just drop the while
+        # loop.
+        return
 
 if __name__ == "__main__":
     gen_1 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks', 2, 1)
