@@ -62,7 +62,7 @@ feature = 'hl_tracks'
 model_name = get_model_name(feature)
 model = keras.models.load_model("./models/" + model_name)
 
-batch_size = 5000
+batch_size = 1000
 
 s_file_names = ['d301488_j1.h5', 'd301489_j2.h5', 'd301490_j3.h5', 'd301491_j4.h5',
                  'd301492_j5.h5', 'd301493_j6.h5', 'd301494_j7.h5', 'd301495_j8.h5',
