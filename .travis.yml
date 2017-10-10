@@ -1,6 +1,6 @@
 sudo: false
 os:
-  - osx
+  # - osx
   - linux
 dist: trusty
 language: python
