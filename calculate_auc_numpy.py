@@ -78,10 +78,12 @@ s_file_names = [#'d361021_j27.h5',
                 'd361029_j35.h5', 'd361030_j36.h5', 'd361031_j37.h5', 'd361032_j38.h5']
 
 if args.mode == 'local':
+    load_path = 'data/'
     bg_file_names = ['d301488_j1.h5']
     s_file_names = ['d361022_j28.h5']
 
-    load_path = 'data/'
+elif args.mode == 'julian':
+    load_path = '/baldig/physicsprojects/atlas/hbb/raw_data/v_3/'
 
 s_predictions, s_weights = get_predictions_from_file_list(model, s_file_names, feature, load_path)
 s_test_y = np.ones_like(s_predictions) * 0
