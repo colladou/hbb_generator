@@ -35,7 +35,7 @@ def get_variable_names(set_name):
         raise NotImplementedError
     return [var_names, merge_order]
 
-def load_mean_and_std(set_name, load_path="/baldig/physicsprojects/atlas/hbb/raw_data/v_3/"):
+def load_mean_and_std(set_name, load_path="./"):
     """
     Returns mean and std vectors for scaling and centering purposes
     set_name: Name of the set to use, for example 'hl_tracks'
