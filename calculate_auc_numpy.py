@@ -51,8 +51,10 @@ def get_predictions_from_file_list(model, file_names, feature,
                                    sub_sample=100,
                                    out_file_path='outputs',
                                    mean_and_std_path='models'):
-    if not isdir(out_file_path):
+    try:
         os.mkdir(out_file_path)
+    except FileExistsError:
+        print('{} already exists, not remaking'.format(out_file_path))
     predictions = None
     weights = None
     for file_name in file_names:
