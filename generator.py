@@ -105,7 +105,7 @@ def merge_batches_from_categories(merge_list):
             data_batch = category_batch
         else:
             assert data_batch.shape[0] == category_batch.shape[0], "Numpy arrays in list must have the same number of samples"
-            print(data_batch.shape, category_batch.shape)
+            # print(data_batch.shape, category_batch.shape)
             data_batch = np.hstack((data_batch, category_batch))
     return data_batch
 

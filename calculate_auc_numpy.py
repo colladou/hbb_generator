@@ -42,13 +42,14 @@ def get_predictions_from_file_list(model, file_names, feature, load_path='./', s
     predictions = None
     weights = None
     for file_name in file_names:
-        print("Making predictions for: ", file_name)
+        print("Counting samples in for {}... ".format(file_name), end='')
         file_name = join(load_path,file_name)
         with h5py.File(file_name, 'r') as open_file:
             num_samples = int(get_num_samples(open_file) * (sub_sample/100.0))
             steps = math.ceil(num_samples/(batch_size*1.0))
             file_weights = get_weights(open_file)
             file_weights = file_weights[0:steps*batch_size]
+        print("{} found, processing".format(num_samples))
 
         out_path = join(out_file_path, basename(file_name))
         with h5py.File(out_path, 'w') as out_file:
@@ -69,6 +70,8 @@ def get_predictions_from_file_list(model, file_names, feature, load_path='./', s
                 weights.resize(new_offset, 0)
                 weights[batch_slice] = file_weights[batch_slice]
                 offset = new_offset
+                print('.',end='', flush=True)
+            print()
 
 args = get_args()
 
