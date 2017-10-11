@@ -60,7 +60,8 @@ def get_predictions_from_file_list(model, file_names, feature, load_path='./', s
                 'weights', (0,), maxshape=(None,),
                 chunks=(batch_size,), dtype=float)
             offset = 0
-            for batch in my_generator(file_name, feature, batch_size):
+            for batch in my_generator(file_name, feature, batch_size,
+                                      max_samples=num_samples):
                 new_offset = offset + batch.shape[0]
                 # build a slice object
                 batch_slice = slice(offset, new_offset)

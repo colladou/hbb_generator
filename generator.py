@@ -161,7 +161,7 @@ def get_batch_slicing_indexes(batch_size, total_num_samples):
                                       range(batch_size, num_samples+batch_size, batch_size))
     return batch_start_end_indices
 
-def my_generator(file_name, set_name, batch_size=1, label=None, include_weights=False, mean_and_std_path='models'):
+def my_generator(file_name, set_name, batch_size=1, max_samples=None, label=None, include_weights=False, mean_and_std_path='models'):
     """
     Yields a batch of samples ready to use for predictions with a Keras model.
     It takes care of getting the correct variables accross datasets, preprocessing, scaling and centering.
@@ -174,6 +174,8 @@ def my_generator(file_name, set_name, batch_size=1, label=None, include_weights=
     data_file = h5py.File(file_name, 'r')
     assert data_file is not None
     total_num_samples = get_num_samples(data_file)
+    if max_samples:
+        total_num_samples = min(total_num_samples, max_samples)
     mean_vector, std_vector = load_mean_and_std(set_name, mean_and_std_path)
     set_variable_names = concatenate_names_from_categories(var_names, merge_order)  # in case we want to look at the full var name list
 
