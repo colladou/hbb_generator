@@ -11,6 +11,7 @@ from argparse import ArgumentParser
 def get_args():
     parser = ArgumentParser()
     parser.add_argument('file_dir', default='outputs', nargs='?')
+    parser.add_argument('--test', action='store_true')
     return parser.parse_args()
 
 def get_predictions_and_weights(name_list, file_directory='outputs'):
@@ -27,6 +28,9 @@ def get_predictions_and_weights(name_list, file_directory='outputs'):
     return np.hstack(pred_list), np.hstack(weights_list)
 
 args = get_args()
+if args.test:
+    # we only save one file for tests, so we use it for both signal and bg
+    bg_file_names = s_file_names
 
 s_predictions, s_weights = get_predictions_and_weights(s_file_names, args.file_dir)
 bg_predictions, bg_weights = get_predictions_and_weights(bg_file_names, args.file_dir)
