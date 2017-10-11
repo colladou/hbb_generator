@@ -144,6 +144,11 @@ def get_weights(data_file, start=0, end=None):
     assert weights is not None
     return weights
 
+def get_baseline(data_file, start, end):
+    subjet1_mv2 = data_file['subjet1']['mv2c10', start:end]
+    subjet2_mv2 = data_file['subjet1']['mv2c10', start:end]
+    return np.minimum(subjet1_mv2, subjet2_mv2)
+
 def get_batch_slicing_indexes(batch_size, total_num_samples):
     """
     Returns an iterable with the (start, end) indices for slicing the data into batches.
@@ -199,6 +204,8 @@ def my_generator(file_name, set_name, batch_size=1, max_samples=None, label=None
             if include_weights:
                 weights = get_weights(data_file, start, end)
 
+            baseline = get_baseline(data_file, start, end)
+
             if label is not None:
                 y = np.ones((data_batch.shape[0],)) * label
             if label is not None and include_weights:
@@ -208,7 +215,7 @@ def my_generator(file_name, set_name, batch_size=1, max_samples=None, label=None
             elif label is not None and not include_weights:
                 yield [data_batch, y]
             else:
-                yield data_batch
+                yield data_batch, baseline
         # We return after running over one iteration of the while
         # loop. This was done this way to make the diff less
         # intrusive, but in the future we should just drop the while

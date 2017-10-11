@@ -75,10 +75,14 @@ def get_predictions_from_file_list(model, file_names, feature,
             weights = out_file.create_dataset(
                 'weights', (0,), maxshape=(None,),
                 chunks=(batch_size,), dtype=float)
+            baseline = out_file.create_dataset(
+                'baseline', (0,), maxshape=(None,),
+                chunks=(batch_size,), dtype=float)
             offset = 0
-            for batch in my_generator(file_name, feature, batch_size,
-                                      max_samples=num_samples,
-                                      mean_and_std_path=mean_and_std_path):
+            for batch, baseline_batch in my_generator(
+                    file_name, feature, batch_size,
+                    max_samples=num_samples,
+                    mean_and_std_path=mean_and_std_path):
                 new_offset = offset + batch.shape[0]
                 # build a slice object
                 batch_slice = slice(offset, new_offset)
@@ -87,6 +91,8 @@ def get_predictions_from_file_list(model, file_names, feature,
                 predictions[batch_slice] = batch_prediction[:,0]
                 weights.resize(new_offset, 0)
                 weights[batch_slice] = file_weights[batch_slice]
+                baseline.resize(new_offset, 0)
+                baseline[batch_slice] = baseline_batch
                 offset = new_offset
                 ttyprint('.',end='', flush=True)
             ttyprint()
