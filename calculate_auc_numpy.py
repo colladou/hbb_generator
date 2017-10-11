@@ -29,6 +29,7 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('mode', choices={'julian','dan','local'},
                         default='local', nargs='?')
+    parser.add_argument('-f', '--files', nargs='*')
     return parser.parse_args()
 
 def get_model_name(feature):
@@ -88,6 +89,11 @@ elif args.mode == 'julian':
 
 elif args.mode == 'dan':
     load_path = '/home/dguest/bookmarks/hbb/hbb/v3/data/'
+
+if args.files:
+    load_path = ''
+    s_file_names = args.files
+    bg_file_names = []
 
 get_predictions_from_file_list(model, s_file_names, feature, load_path)
 get_predictions_from_file_list(model, bg_file_names, feature, load_path, sub_sample=10)
