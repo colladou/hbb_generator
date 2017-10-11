@@ -29,7 +29,16 @@ def get_variable_names(set_name):
         var_names['subjet2'] = var_names['subjet1']
         merge_order = ('jets', 'subjet1', 'subjet2')
     elif set_name == 'tracks':
-        pass
+        var_names['jets'] = ('pt', 'eta')
+        var_names['tracks'] = ('pt', 'deta', 'dphi', 'dr', 'ptfrac', 
+                               'd0', 'z0', 'd0sig', 'z0sig', 
+                               #'d0_ls', 'z0_ls', 'd0sig_ls', 'z0sig_ls', 
+                               'chi2', 'ndf',
+                               'numberOfInnermostPixelLayerHits', 'numberOfNextToInnermostPixelLayerHits', 'numberOfBLayerHits', 'numberOfBLayerSharedHits',
+                               'numberOfBLayerSplitHits', 'numberOfPixelHits', 'numberOfPixelHoles', 'numberOfPixelSharedHits',
+                               'numberOfPixelSplitHits', 'numberOfSCTHits', 'numberOfSCTHoles', 'numberOfSCTSharedHits',
+                               'expectBLayerHit', 'mask')
+        merge_order = ('jets', 'tracks')
     else:
         print(set_name)        
         raise NotImplementedError
@@ -59,7 +68,11 @@ def flatten(data, name_list):
     """
     ftype = [(name, float) for name in name_list]
     flat = data.astype(ftype).view(float).reshape(data.shape + (-1,))
-    return flat.swapaxes(1, len(data.shape))
+    flat = flat.swapaxes(1, len(data.shape))
+    if len(flat.shape) > 2:
+        print(flat.shape)
+        flat = np.reshape(flat, (flat.shape[0], flat.shape[1] * flat.shape[2]))
+    return flat
 
 def extract_variables(data, variable_names):    
     print(data.shape)
@@ -92,6 +105,7 @@ def merge_batches_from_categories(merge_list):
             data_batch = category_batch
         else:
             assert data_batch.shape[0] == category_batch.shape[0], "Numpy arrays in list must have the same number of samples"
+            print(data_batch.shape, category_batch.shape)
             data_batch = np.hstack((data_batch, category_batch))
     return data_batch
 
@@ -183,8 +197,9 @@ def my_generator(file_name, set_name, batch_size=1, label=None, include_weights=
             if include_weights:
                 weights = get_weights(data_file, start, end)
 
-            if label is not None and include_weights:
+            if label is not None:
                 y = np.ones((data_batch.shape[0],)) * label
+            if label is not None and include_weights:
                 yield [data_batch, y, weights]
             elif label is None and include_weights:
                 yield [data_batch, weights]
@@ -199,9 +214,9 @@ def my_generator(file_name, set_name, batch_size=1, label=None, include_weights=
         return
 
 if __name__ == "__main__":
-    gen_1 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks', 2, 1)
+    gen_1 = my_generator('small_test_raw_data_signal.h5', 'tracks', 2, 1)
     #print(gen_1.next()) # this syntax is for python 2
-    print(next(gen_1))
+    print(next(gen_1)[0].shape)
     # this tests the trailing samples problem
     #gen_2 = my_generator('small_test_raw_data_signal.h5', 'hl_tracks', 100)
     #for i in range(88):
