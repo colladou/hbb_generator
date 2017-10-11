@@ -71,7 +71,7 @@ def get_predictions_from_file_list(model, file_names, feature, load_path='./', s
                 batch_slice = slice(offset, new_offset)
                 predictions.resize(new_offset, 0)
                 batch_prediction = model.predict(batch)
-                predictions[batch_slice] = batch_prediction[0]
+                predictions[batch_slice] = batch_prediction[:,0]
                 weights.resize(new_offset, 0)
                 weights[batch_slice] = file_weights[batch_slice]
                 offset = new_offset
