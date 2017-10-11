@@ -112,7 +112,7 @@ batch_size = 1000
 
 if args.mode == 'local':
     load_path = 'data/'
-    s_file_names = s_file_names[0:1]
+    s_file_names = []
     bg_file_names = bg_file_names[0:1]
 
 elif args.mode == 'julian':
