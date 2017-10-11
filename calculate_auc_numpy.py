@@ -28,6 +28,10 @@ from file_names import s_file_names, bg_file_names
 
 # be able to predict only on smaller number of samples of the file
 
+def ttyprint(*args, **kwargs):
+    if sys.stdout.isatty():
+        print(*args, **kwargs)
+
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('mode', choices={'julian','dan','local'},
@@ -82,8 +86,8 @@ def get_predictions_from_file_list(model, file_names, feature,
                 weights.resize(new_offset, 0)
                 weights[batch_slice] = file_weights[batch_slice]
                 offset = new_offset
-                print('.',end='', flush=True)
-            print()
+                ttyprint('.',end='', flush=True)
+            ttyprint()
 
 args = get_args()
 

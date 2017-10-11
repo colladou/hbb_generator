@@ -4,6 +4,7 @@
 #SBATCH -e batch_outputs/stderr-%a.txt
 #SBATCH -p atlas_all -c 2 --mem 3000
 #SBATCH --array 0-35
+#SBATCH -t 01:00:00
 
 set -eu
 
