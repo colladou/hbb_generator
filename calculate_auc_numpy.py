@@ -19,10 +19,12 @@ import math
 from generator import my_generator
 from generator import get_num_samples, get_weights
 import argparse
-from os.path import join, isdir, basename
+from os.path import join, isdir, basename, dirname, abspath
+import inspect
 
 # the file lists are in a common file now
 from file_names import s_file_names, bg_file_names
+
 
 # be able to predict only on smaller number of samples of the file
 
@@ -40,7 +42,11 @@ def get_args():
 def get_model_name(feature):
     return '%s_model.h5' % feature
 
-def get_predictions_from_file_list(model, file_names, feature, load_path='./', sub_sample=100, out_file_path='outputs'):
+def get_predictions_from_file_list(model, file_names, feature,
+                                   load_path='./',
+                                   sub_sample=100,
+                                   out_file_path='outputs',
+                                   mean_and_std_path='models'):
     if not isdir(out_file_path):
         os.mkdir(out_file_path)
     predictions = None
@@ -65,7 +71,8 @@ def get_predictions_from_file_list(model, file_names, feature, load_path='./', s
                 chunks=(batch_size,), dtype=float)
             offset = 0
             for batch in my_generator(file_name, feature, batch_size,
-                                      max_samples=num_samples):
+                                      max_samples=num_samples,
+                                      mean_and_std_path=mean_and_std_path):
                 new_offset = offset + batch.shape[0]
                 # build a slice object
                 batch_slice = slice(offset, new_offset)
@@ -83,7 +90,10 @@ args = get_args()
 feature = 'hl_tracks'
 
 model_name = get_model_name(feature)
-model = keras.models.load_model("./models/" + model_name)
+# some things have to make reference to this package
+this_dir = abspath(dirname(inspect.getfile(inspect.currentframe())))
+mean_and_std_path = join(this_dir, "models")
+model = keras.models.load_model(join(this_dir, "models", model_name))
 
 batch_size = 1000
 
@@ -116,6 +126,9 @@ if args.get_n_files:
     print('running on {} files'.format(n_files_total))
     exit(1)
 
-get_predictions_from_file_list(model, s_file_names, feature, load_path)
-get_predictions_from_file_list(model, bg_file_names, feature, load_path, sub_sample=10)
+get_predictions_from_file_list(model, s_file_names, feature, load_path,
+                               mean_and_std_path=mean_and_std_path)
+get_predictions_from_file_list(model, bg_file_names, feature, load_path,
+                               mean_and_std_path=mean_and_std_path,
+                               sub_sample=10)
 
