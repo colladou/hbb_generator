@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from file_names import s_file_names
 from file_names import bg_file_names
 import h5py
@@ -5,8 +6,14 @@ from os.path import join, isfile, isdir
 import numpy as np
 from sklearn import metrics
 import os
+from argparse import ArgumentParser
 
-def get_predictions_and_weights(name_list):
+def get_args():
+    parser = ArgumentParser()
+    parser.add_argument('file_dir', default='outputs', nargs='?')
+    return parser.parse_args()
+
+def get_predictions_and_weights(name_list, file_directory='outputs'):
     pred_list = []
     weights_list = []
     for fname in name_list:
@@ -19,8 +26,10 @@ def get_predictions_and_weights(name_list):
             weights_list.append(np.asarray(h5file['weights']))
     return np.hstack(pred_list), np.hstack(weights_list)
 
-s_predictions, s_weights = get_predictions_and_weights(s_file_names)
-bg_predictions, bg_weights = get_predictions_and_weights(bg_file_names)
+args = get_args()
+
+s_predictions, s_weights = get_predictions_and_weights(s_file_names, args.file_dir)
+bg_predictions, bg_weights = get_predictions_and_weights(bg_file_names, args.file_dir)
 
 s_test_y = np.ones_like(s_predictions) * 1
 bg_test_y = np.ones_like(bg_predictions) * 0
