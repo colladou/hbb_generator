@@ -31,6 +31,10 @@ def get_args():
     parser.add_argument('mode', choices={'julian','dan','local'},
                         default='local', nargs='?')
     parser.add_argument('-f', '--files', nargs='*')
+    parser.add_argument('-n', '--file-number', type=int,
+                        help="only run on one file, given by this index")
+    parser.add_argument('--get-n-files', action='store_true',
+                        help='print number of files this will use and exit')
     return parser.parse_args()
 
 def get_model_name(feature):
@@ -99,6 +103,18 @@ if args.files:
     load_path = ''
     s_file_names = args.files
     bg_file_names = []
+
+if args.file_number is not None:
+    # set the file lists such that only one file is used
+    fid = args.file_number
+    s_file_names = s_file_names[fid:fid+1]
+    fid -= len(s_file_names)
+    bg_file_names = bg_file_names[fid:fid+1]
+
+if args.get_n_files:
+    n_files_total = len(s_file_names) + len(bg_file_names)
+    print('running on {} files'.format(n_files_total))
+    exit(1)
 
 get_predictions_from_file_list(model, s_file_names, feature, load_path)
 get_predictions_from_file_list(model, bg_file_names, feature, load_path, sub_sample=10)
