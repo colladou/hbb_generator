@@ -70,7 +70,6 @@ def flatten(data, name_list):
     flat = data.astype(ftype).view(float).reshape(data.shape + (-1,))
     flat = flat.swapaxes(1, len(data.shape))
     if len(flat.shape) > 2:
-        print(flat.shape)
         flat = np.reshape(flat, (flat.shape[0], flat.shape[1] * flat.shape[2]))
     return flat
 
