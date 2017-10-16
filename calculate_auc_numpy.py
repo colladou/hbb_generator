@@ -99,7 +99,7 @@ def get_predictions_from_file_list(model, file_names, feature,
 
 args = get_args()
 
-feature = 'hl_tracks'
+feature = 'tracks'
 
 model_name = get_model_name(feature)
 # some things have to make reference to this package
@@ -116,7 +116,8 @@ if args.mode == 'local':
     bg_file_names = bg_file_names[0:1]
 
 elif args.mode == 'julian':
-    load_path = '/baldig/physicsprojects/atlas/hbb/raw_data/v_3/'
+    load_path = '/baldig/physicsprojects/atlas/hbb/raw_data/v_5/'
+    print("loading from: ", load_path)
 
 elif args.mode == 'dan':
     load_path = '/home/dguest/bookmarks/hbb/hbb/v3/data/'
