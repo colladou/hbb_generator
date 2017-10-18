@@ -46,11 +46,23 @@ def get_args():
 def get_model_name(feature):
     return '%s_model.h5' % feature
 
+def get_extra_info_type(hfile, extra_info):
+    """
+    Gets the datatype of extra info that we'll write out
+    """
+    dtypes = []
+    for ds_name, variables in extra_info:
+        dtype = hfile[ds_name].dtype
+        types = [('{}_{}'.format(ds_name, n), dtype[n]) for n in variables]
+        dtypes += types
+    return dtypes
+
 def get_predictions_from_file_list(model, file_names, feature,
                                    load_path='./',
                                    sub_sample=100,
                                    out_file_path='outputs',
-                                   mean_and_std_path='models'):
+                                   mean_and_std_path='models',
+                                   extra_info=[('jets',['eta', 'pt'])]):
     try:
         os.mkdir(out_file_path)
     except FileExistsError:
@@ -65,6 +77,7 @@ def get_predictions_from_file_list(model, file_names, feature,
             steps = math.ceil(num_samples/(batch_size*1.0))
             file_weights = get_weights(open_file)
             file_weights = file_weights[0:steps*batch_size]
+            extra_type = get_extra_info_type(open_file, extra_info)
         print("{} found, processing".format(num_samples))
 
         out_path = join(out_file_path, basename(file_name))
@@ -78,11 +91,15 @@ def get_predictions_from_file_list(model, file_names, feature,
             baseline = out_file.create_dataset(
                 'baseline', (0,), maxshape=(None,),
                 chunks=(batch_size,), dtype=float)
+            extra = out_file.create_dataset(
+                'extra', (0,), maxshape=(None,), chunks=(batch_size,),
+                dtype=extra_type)
             offset = 0
-            for batch, baseline_batch in my_generator(
+            for batch, baseline_batch, extra_batch in my_generator(
                     file_name, feature, batch_size,
                     max_samples=num_samples,
-                    mean_and_std_path=mean_and_std_path):
+                    mean_and_std_path=mean_and_std_path,
+                    extra_info=extra_info):
                 new_offset = offset + batch.shape[0]
                 # build a slice object
                 batch_slice = slice(offset, new_offset)
@@ -93,6 +110,8 @@ def get_predictions_from_file_list(model, file_names, feature,
                 weights[batch_slice] = file_weights[batch_slice]
                 baseline.resize(new_offset, 0)
                 baseline[batch_slice] = baseline_batch
+                extra.resize(new_offset, 0)
+                extra[batch_slice] = extra_batch
                 offset = new_offset
                 ttyprint('.',end='', flush=True)
             ttyprint()
