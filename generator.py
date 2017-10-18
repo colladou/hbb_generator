@@ -3,6 +3,7 @@ from __future__ import print_function
 import numpy as np
 import h5py
 from os.path import join
+from numpy.lib.recfunctions import merge_arrays
 
 # hard code get_variable_names
 # check that in functions I am returning the transformed data and not transforming the original data
@@ -145,8 +146,30 @@ def get_weights(data_file, start=0, end=None):
 
 def get_baseline(data_file, start, end):
     subjet1_mv2 = data_file['subjet1']['mv2c10', start:end]
-    subjet2_mv2 = data_file['subjet1']['mv2c10', start:end]
+    subjet2_mv2 = data_file['subjet2']['mv2c10', start:end]
     return np.minimum(subjet1_mv2, subjet2_mv2)
+
+def get_extra_info(data_file, start, end, extra_info):
+    """
+    Return extra information as a structured array
+    extra_info: list of the form [(dataset, [variables,...]), ...]
+    """
+    if not extra_info:
+        return None
+    sub_arrays = []
+    for ds_name, variables in extra_info:
+        idx_tuple = tuple(variables) + (slice(start,end),)
+        dataset = data_file[ds_name]
+        sub_array = dataset[idx_tuple]
+        # h5py doesn't return a structured array for a single value
+        # this is to make it consistent
+        if len(variables) == 1:
+            dtype = dataset.dtype[variables[0]]
+            sub_array = np.array(sub_array, dtype=[(variables[0],dtype)])
+        sub_names = ['{}_{}'.format(ds_name, x) for x in variables]
+        sub_array.dtype.names = sub_names
+        sub_arrays.append(sub_array)
+    return merge_arrays(sub_arrays, flatten=True, asrecarray=True)
 
 def get_batch_slicing_indexes(batch_size, total_num_samples):
     """
@@ -165,7 +188,7 @@ def get_batch_slicing_indexes(batch_size, total_num_samples):
                                       range(batch_size, num_samples+batch_size, batch_size))
     return batch_start_end_indices
 
-def my_generator(file_name, set_name, batch_size=1, max_samples=None, label=None, include_weights=False, mean_and_std_path='models'):
+def my_generator(file_name, set_name, batch_size=1, max_samples=None, label=None, include_weights=False, mean_and_std_path='models', extra_info=[]):
     """
     Yields a batch of samples ready to use for predictions with a Keras model.
     It takes care of getting the correct variables accross datasets, preprocessing, scaling and centering.
@@ -204,6 +227,7 @@ def my_generator(file_name, set_name, batch_size=1, max_samples=None, label=None
                 weights = get_weights(data_file, start, end)
 
             baseline = get_baseline(data_file, start, end)
+            extra_data = get_extra_info(data_file, start, end, extra_info)
 
             if label is not None:
                 y = np.ones((data_batch.shape[0],)) * label
@@ -214,7 +238,7 @@ def my_generator(file_name, set_name, batch_size=1, max_samples=None, label=None
             elif label is not None and not include_weights:
                 yield [data_batch, y]
             else:
-                yield data_batch, baseline
+                yield data_batch, baseline, extra_data
         # We return after running over one iteration of the while
         # loop. This was done this way to make the diff less
         # intrusive, but in the future we should just drop the while
