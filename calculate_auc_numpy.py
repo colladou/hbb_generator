@@ -57,12 +57,14 @@ def get_extra_info_type(hfile, extra_info):
         dtypes += types
     return dtypes
 
+EXTRA_INFO=[('jets',['eta', 'pt', 'mass'])]
+
 def get_predictions_from_file_list(model, file_names, feature,
                                    load_path='./',
                                    sub_sample=100,
                                    out_file_path='outputs',
                                    mean_and_std_path='models',
-                                   extra_info=[('jets',['eta', 'pt'])]):
+                                   extra_info=EXTRA_INFO):
     try:
         os.mkdir(out_file_path)
     except FileExistsError:
