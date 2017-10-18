@@ -139,7 +139,7 @@ elif args.mode == 'julian':
     print("loading from: ", load_path)
 
 elif args.mode == 'dan':
-    load_path = '/home/dguest/bookmarks/hbb/hbb/v3/data/'
+    load_path = '/home/dguest/bookmarks/hbb/hbb/v5.1/data/'
 
 if args.files:
     load_path = ''
