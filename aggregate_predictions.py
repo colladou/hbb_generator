@@ -84,3 +84,6 @@ fpr, tpr, _ = metrics.roc_curve(test_y, predictions, sample_weight=weights)
 np.save('./auc/tpr_%s.npy' % (feature), tpr)
 np.save('./auc/fpr_%s.npy' % (feature), fpr)
 
+with h5py.File(join('auc', 'roc_{}.h5'.format(feature)), 'w') as roc_file:
+    roc_file.create_dataset('tpr', data=tpr)
+    roc_file.create_dataset('fpr', data=fpr)
