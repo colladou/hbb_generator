@@ -144,9 +144,17 @@ def get_weights(data_file, start=0, end=None):
     assert weights is not None
     return weights
 
+def get_mv2_score(subjet):
+    valid = subjet['mask']
+    mv2 = np.asarray(subjet['mv2c10'])
+    mv2[~valid] = -1
+    return mv2
+
 def get_baseline(data_file, start, end):
-    subjet1_mv2 = data_file['subjet1']['mv2c10', start:end]
-    subjet2_mv2 = data_file['subjet2']['mv2c10', start:end]
+    subjet1 = data_file['subjet1']['mv2c10', 'mask', start:end]
+    subjet2 = data_file['subjet2']['mv2c10', 'mask', start:end]
+    subjet1_mv2 = get_mv2_score(subjet1)
+    subjet2_mv2 = get_mv2_score(subjet2)
     return np.minimum(subjet1_mv2, subjet2_mv2)
 
 def get_extra_info(data_file, start, end, extra_info):

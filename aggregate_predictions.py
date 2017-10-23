@@ -68,6 +68,8 @@ assert test_y.shape[0] == s_test_y.shape[0] + bg_test_y.shape[0]
 predictions = predictions.reshape(predictions.shape[0],)
 weights = weights.reshape(weights.shape[0],)
 
+assert not np.any(np.isnan(predictions))
+
 print(predictions.shape, test_y.shape, weights.shape)
 
 assert predictions.shape[0] == test_y.shape[0], predictions.shape[0]
