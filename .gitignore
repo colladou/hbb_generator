@@ -5,3 +5,13 @@ __pycache__/
 # ignore some outputs
 /auc/
 /outputs/
+/plots/
+
+# ignore common data file types
+*.h5
+*.npy
+
+# but include data files in some directories
+!/models/*.npy
+!/models/*.h5
+!/data/*.h5
