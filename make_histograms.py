@@ -43,7 +43,7 @@ def make_histograms(h5_file):
         names = []
         for name, nbins, low, high in axes:
             bins = np.concatenate(
-                ([-np.inf], np.linspace(low, high, nbins), [np.inf]) )
+                ([-np.inf], np.linspace(low, high, nbins+1), [np.inf]) )
             bins_list.append(bins)
             names.append(name)
         values = np.stack([arrays[x] for x in names], 1)
