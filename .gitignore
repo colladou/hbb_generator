@@ -10,6 +10,10 @@ __pycache__/
 # ignore common data file types
 *.h5
 *.npy
+*.csv
+
+# and some common plot types
+*.pdf
 
 # but include data files in some directories
 !/models/*.npy

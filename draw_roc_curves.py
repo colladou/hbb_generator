@@ -28,7 +28,7 @@ def run():
             tpr = np.asarray(h5_file['tpr'])
             fpr = np.asarray(h5_file['fpr'])
             # we only care about tpr > 0.6 or so
-            valid = tpr > 0.6
+            valid = tpr > 0.4
         ax.plot(tpr[valid], 1/fpr[valid], '-', label=ds_name)
     ax.legend()
     ax.set_yscale('log')
