@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+"""
+Script to make histograms from datasets in which predictions have
+been recorded.
+"""
+# help for various options
+_test_help = 'run quick job to test histogram building'
+
 from file_names import s_file_names
 from file_names import bg_file_names
 import h5py
@@ -9,11 +16,14 @@ import os
 from argparse import ArgumentParser
 from itertools import combinations
 
+
+
 def get_args():
-    parser = ArgumentParser()
+    parser = ArgumentParser(description=__doc__)
     h = dict(help='default: %(default)s')
     parser.add_argument('file_dir', default='outputs', nargs='?')
     parser.add_argument('-o', '--out-file', default='hists.h5', **h)
+    parser.add_argument('--test', action='store_true',help=_test_help)
     return parser.parse_args()
 
 RANGES = [
@@ -86,6 +96,9 @@ def run():
     args = get_args()
     sig_paths = [join(args.file_dir, nm) for nm in s_file_names]
     bg_paths = [join(args.file_dir, nm) for nm in bg_file_names]
+    if args.test:
+        bg_paths = bg_paths[0:1]
+        sig_paths = bg_paths
     with h5py.File(args.out_file, 'w') as h5_file:
         sig_hists = aggregage_histograms(sig_paths)
         sig = h5_file.create_group('signal')
