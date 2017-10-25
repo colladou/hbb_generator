@@ -11,6 +11,9 @@ set -eu
 echo "submit from ${SLURM_SUBMIT_DIR-here}, index ${SLURM_ARRAY_TASK_ID-none}"
 cd ${SLURM_SUBMIT_DIR-.}
 
-calculate_auc_numpy.py dan --file-number ${SLURM_ARRAY_TASK_ID-0}
+FN=${SLURM_ARRAY_TASK_ID-0}
+
+calculate_auc_numpy.py dan hl_tracks --file-number $FN -o hl_tracks
+calculate_auc_numpy.py dan tracks --file-number $FN -o tracks
 
 echo "done"
