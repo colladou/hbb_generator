@@ -24,7 +24,7 @@ def get_predictions_and_weights(name_list, file_directory='outputs',
     pred_list = []
     weights_list = []
     for fname in name_list:
-        fpath = join('outputs', fname)
+        fpath = join(file_directory, fname)
         if not isfile(fpath):
             print('{} not found, skipping...'.format(fname))
             continue

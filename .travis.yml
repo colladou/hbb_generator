@@ -18,7 +18,7 @@ env:
 script:
   - python3 calculate_predictions.py local hl_tracks -o hl_tracks
   - python3 aggregate_predictions.py --test hl_tracks
-  - python3 make_histograms.py outputs --test hl_tracks
+  - python3 make_histograms.py --test hl_tracks
   - python3 calculate_predictions.py local tracks -o tracks
   - python3 aggregate_predictions.py --test tracks
-  - python3 make_histograms.py outputs --test tracks
+  - python3 make_histograms.py --test tracks
