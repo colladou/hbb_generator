@@ -67,6 +67,11 @@ def flatten(data, name_list):
     Example;
     print(flatten(sample_jets[['pt', 'eta']]))
     """
+    if 'ip3d_ntrk' in name_list:
+        tens = np.ones_like(data['ip3d_ntrk']) * 10.0
+        print(data['ip3d_ntrk'].shape)
+        data['ip3d_ntrk'] = tens
+        print('hacking')
     ftype = [(name, float) for name in name_list]
     flat = data.astype(ftype).view(float).reshape(data.shape + (-1,))
     flat = flat.swapaxes(1, len(data.shape))
