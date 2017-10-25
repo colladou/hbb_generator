@@ -16,6 +16,6 @@ env:
   - KERAS_BACKEND=tensorflow
 
 script:
-  - python3 calculate_preductions.py
+  - python3 calculate_predictions.py
   - python3 aggregate_predictions.py --test
   - python3 make_histograms.py outputs --test
