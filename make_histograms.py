@@ -65,6 +65,8 @@ def make_histograms(h5_file, do_window):
             mass = extra['jets_mass']
             valid = (mass > 76) & (mass < 146)
             values = values[valid, :]
+        else:
+            valid = np.ones_like(weights, dtype=bool)
 
         histogram = np.histogramdd(values, bins=bins_list,
                                    weights=weights[valid])[0]
