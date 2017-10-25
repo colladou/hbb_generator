@@ -34,13 +34,17 @@ def ttyprint(*args, **kwargs):
 
 def get_args():
     parser = argparse.ArgumentParser()
+    d = dict(help='default: %(default)s')
     parser.add_argument('mode', choices={'julian','dan','local'},
                         default='local', nargs='?')
+    parser.add_argument('feature', choices={'hl_tracks', 'tracks'},
+                        default='hl_tracks', nargs='?')
     parser.add_argument('-f', '--files', nargs='*')
     parser.add_argument('-n', '--file-number', type=int,
                         help="only run on one file, given by this index")
     parser.add_argument('--get-n-files', action='store_true',
                         help='print number of files this will use and exit')
+    parser.add_argument('-o', '--output-dir', default='outputs', **d)
     return parser.parse_args()
 
 def get_model_name(feature):
@@ -120,7 +124,7 @@ def get_predictions_from_file_list(model, file_names, feature,
 
 args = get_args()
 
-feature = 'tracks'
+feature = args.feature
 
 model_name = get_model_name(feature)
 # some things have to make reference to this package
@@ -161,8 +165,10 @@ if args.get_n_files:
     exit(1)
 
 get_predictions_from_file_list(model, s_file_names, feature, load_path,
-                               mean_and_std_path=mean_and_std_path)
+                               mean_and_std_path=mean_and_std_path,
+                               out_file_path=args.output_dir)
 get_predictions_from_file_list(model, bg_file_names, feature, load_path,
                                mean_and_std_path=mean_and_std_path,
+                               out_file_path=args.output_dir,
                                sub_sample=10)
 

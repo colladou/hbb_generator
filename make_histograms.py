@@ -5,6 +5,8 @@ been recorded.
 """
 # help for various options
 _test_help = 'run quick job to test histogram building'
+_mass_window_help = 'require a mass window between {} and {} GeV'
+MASS_WINDOW = (76, 146)
 
 from file_names import s_file_names
 from file_names import bg_file_names
@@ -24,6 +26,8 @@ def get_args():
     parser.add_argument('file_dir', default='outputs', nargs='?')
     parser.add_argument('-o', '--out-file', default='hists.h5', **h)
     parser.add_argument('--test', action='store_true',help=_test_help)
+    parser.add_argument('-w', '--mass-window', action='store_true',
+                        help=_mass_window_help.format(*MASS_WINDOW))
     return parser.parse_args()
 
 RANGES = [
@@ -36,7 +40,7 @@ RANGES_DICT = {n: (b, l, h) for n, b, l, h in RANGES}
 
 AXES = [(RANGES[m],RANGES[n]) for m,n in combinations(range(len(RANGES)),2)]
 
-def make_histograms(h5_file):
+def make_histograms(h5_file, do_window):
     """
     Make 2d histograms from an h5 file
     returns: a dictionary of 2d histograms, with axes given by AXES
@@ -57,15 +61,21 @@ def make_histograms(h5_file):
             bins_list.append(bins)
             names.append(name)
         values = np.stack([arrays[x] for x in names], 1)
-        histogram = np.histogramdd(values, bins=bins_list, weights=weights)[0]
+        if do_window:
+            mass = extra['jets_mass']
+            valid = (mass > 76) & (mass < 146)
+            values = values[valid, :]
+
+        histogram = np.histogramdd(values, bins=bins_list,
+                                   weights=weights[valid])[0]
         histograms[tuple(names)] = histogram
     return histograms
 
-def aggregage_histograms(file_list):
+def aggregage_histograms(file_list, do_window):
     aggregated_hists = defaultdict(lambda: 0)
     for fpath in file_list:
         with h5py.File(fpath, 'r') as h5file:
-            hists = make_histograms(h5file)
+            hists = make_histograms(h5file, do_window)
         for hname, hist in hists.items():
             aggregated_hists[hname] += hist
     return aggregated_hists
@@ -100,11 +110,11 @@ def run():
         bg_paths = bg_paths[0:1]
         sig_paths = bg_paths
     with h5py.File(args.out_file, 'w') as h5_file:
-        sig_hists = aggregage_histograms(sig_paths)
+        sig_hists = aggregage_histograms(sig_paths, args.mass_window)
         sig = h5_file.create_group('signal')
         for nm_tup, hist in sig_hists.items():
             add_ds(sig, (nm_tup, hist) )
-        bg_hists = aggregage_histograms(bg_paths)
+        bg_hists = aggregage_histograms(bg_paths, args.mass_window)
         bg = h5_file.create_group('background')
         for nm_tup, hist in bg_hists.items():
             add_ds(bg, (nm_tup, hist) )
