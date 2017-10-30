@@ -21,11 +21,12 @@ def get_variable_names(set_name):
     if set_name == 'hl_tracks':
         var_names['jets'] = ('pt', 'eta')
         var_names['subjet1'] = ('pt', 'eta', 
-                              'ip3d_ntrk', 'ip2d_pu', 'ip2d_pc', 'ip2d_pb', 'ip3d_pu', 'ip3d_pc', 'ip3d_pb',
+                              #'ip3d_ntrk', 
+                              'ip2d_pu', 'ip2d_pc', 'ip2d_pb', 'ip3d_pu', 'ip3d_pc', 'ip3d_pb',
                               'mu_dR', 'mu_mombalsignif', 'mu_d0', 'mu_pTrel', 'mu_qOverPratio', 'mu_scatneighsignif',
                               'jf_dr', 'jf_efc', 'jf_m', 'jf_n2t', 'jf_ntrkAtVx', 'jf_nvtx', 'jf_nvtx1t', 'jf_sig3d', 'jf_deta', 'jf_dphi',
                               'sv1_dR', 'sv1_efc', 'sv1_Lxyz', 'sv1_Lxy', 'sv1_m', 'sv1_n2t', 'sv1_ntrkv', 'sv1_normdist',
-                              'dphi_fatjet', 'deta_fatjet', 'dr_fatjet',
+                              #'dphi_fatjet', 'deta_fatjet', 'dr_fatjet',
                               'mask')
         var_names['subjet2'] = var_names['subjet1']
         merge_order = ('jets', 'subjet1', 'subjet2')
