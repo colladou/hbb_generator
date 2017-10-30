@@ -34,7 +34,7 @@ def get_variable_names(set_name):
         var_names['jets'] = ('pt', 'eta')
         var_names['tracks'] = ('pt', 'deta', 'dphi', 'dr', 'ptfrac', 
                                'd0', 'z0', 'd0sig', 'z0sig', 
-                               #'d0_ls', 'z0_ls', 'd0sig_ls', 'z0sig_ls', 
+                               'd0_ls', 'z0_ls', 'd0sig_ls', 'z0sig_ls', 
                                'chi2', 'ndf',
                                'numberOfInnermostPixelLayerHits', 'numberOfNextToInnermostPixelLayerHits', 'numberOfBLayerHits', 'numberOfBLayerSharedHits',
                                'numberOfBLayerSplitHits', 'numberOfPixelHits', 'numberOfPixelHoles', 'numberOfPixelSharedHits',
