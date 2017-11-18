@@ -13,6 +13,8 @@ def get_args():
     parser = ArgumentParser()
     parser.add_argument('input_file')
     parser.add_argument('-o', '--output-dir', default='plots')
+    parser.add_argument('-e', '--ext', default='.pdf',
+                        choices={'.pdf', '.png'})
     return parser.parse_args()
 
 def compute_roc(h5file, discrim, variable, window):
@@ -41,21 +43,25 @@ WINDOWS = [
     ('jets_pt', 800, 1000),
     ('jets_pt', 1000, 1500),
     ('jets_pt', 1500, 2000),
+    ('jets_pt', 250, 2000),
 ]
 DISCRIM = ['baseline', 'predictions']
 
 def run():
     args = get_args()
+    ext = args.ext.lstrip('.')
     rates = {}
     with h5py.File(args.input_file, 'r') as h5_file:
         for window in WINDOWS:
-            path = join(args.output_dir, '{}-{}-{}.pdf'.format(*window))
+            path = join(args.output_dir, '{}-{}-{}.{}'.format(*window, ext))
             with Canvas(path) as can:
                 for discrim in DISCRIM:
                     var, *bounds = window
                     tpr, fpr = compute_roc(h5_file, discrim, var, bounds)
-                    title = r'{}: {} -- {}'.format(discrim,*window[1:])
+                    title = r'{}: {} -- {} GeV'.format(discrim,*window[1:])
                     draw_roc(can, tpr, fpr, title)
+                can.ax.set_ylabel('Light Jet Rejection')
+                can.ax.set_xlabel(r'$H$ Jet Efficiency')
                 can.ax.legend()
                 can.ax.set_yscale('log')
 
