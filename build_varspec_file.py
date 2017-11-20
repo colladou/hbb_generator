@@ -58,12 +58,12 @@ energy_corrections = {
 def correct_entry(entry):
     for old, new in ntup_to_edm_taggers.items():
         entry['name'] = entry['name'].replace(old, new)
-    if 'IP2D' in entry['name'] or 'IP3D' in entry['name']:
-        for old, new in sv_ntup_to_edm_vars.items():
-            if entry['name'].endswith(old):
-                entry['name'] = entry['name'].replace(old,new)
     if 'JetFitter' in entry['name']:
         for old, new in jf_ntup_to_edm_vars.items():
+            if entry['name'].endswith(old):
+                entry['name'] = entry['name'].replace(old,new)
+    if 'SV1' in entry['name']:
+        for old, new in sv_ntup_to_edm_vars.items():
             if entry['name'].endswith(old):
                 entry['name'] = entry['name'].replace(old,new)
     for key in energy_corrections:
