@@ -43,7 +43,7 @@ sv_ntup_to_edm_vars = {
     '_efc': '_efracsvx',
     '_Lxyz': '_L3d',
     '_Lxy': '_Lxy',
-    '_m': '_massvx',
+    '_m': '_masssvx',
     '_n2t': '_N2Tpair',
     '_ntrkv': '_NGTinSvx',
     '_normdist': '_normdist',
